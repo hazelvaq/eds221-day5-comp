@@ -53,3 +53,39 @@ expect_type(mean_range(mtcars),"double")
 # Unit testing is a part of software building but make life easier
 expect_true(mean_range(mtcars)[2] < mean_range(mtcars)[2])
 ```
+
+```{r}
+#Source a function from another script in a different folder using the here() function
+source(here::here("src","name_cart.R"))
+
+
+```
+
+```{r}
+## Here we can call that function and get a response
+
+name_cart("pizza","whale")
+```
+
+```{r}
+# ANother example
+source(here::here("src","cork_oak_growth.R"))
+
+height_t2(50,12,11)
+```
+
+## How to document packages
+
+Click somewhere btw the function and go to code and click Insert Roxygen skeleton
+
+```{r}
+#' Title
+#' 
+#' @param food Your favorite food
+#' @param animal Your favorite animal
+#' 
+#' @return
+#' @export
+#' 
+#' @examples
+```
