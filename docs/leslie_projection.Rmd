@@ -43,16 +43,16 @@ Add line-by-line comments wheres prompted in the code below, explaining what eac
 # ------ WHAT HAPPENS HERE? ------ #
 # ------ comment line-by-line ---- #
 
-# The line below...
+# Sequence of years from 0 to 8 years by 1 year (9 values)
 time_yr <- seq(from = 0, to = 8, by = 1)
 
-# The line below...
+# Creating a blank matrix of 9 by 4 (row,column)
 proj_year <- matrix(ncol = length(fish_year0), nrow = length(time_yr))
 
-# The line below...
+# Putting fish year vector in first row of proj_year
 proj_year[1, ] <- fish_year0
 
-# The for loop below...
+# This is a for loop that will complete the dot product and populates the rows
 for (i in 2:length(time_yr)) {
   proj_year[i,] <- fish_leslie %*% proj_year[i-1,]
 }
@@ -61,8 +61,11 @@ for (i in 2:length(time_yr)) {
 # The rest is wrangling & visualization (run to check it out):
 colnames(proj_year) <- c("eggs", "fry", "juvenile", "adult")
 
+#Here pivot longermakes a data frame from wide to long format and excluding (-time_yr)
 proj_df <- data.frame(time_yr, proj_year) %>% 
   pivot_longer(cols = -time_yr, names_to = "lifestage", values_to = "stage_population")
+
+## Could also -time_yr = c("eggs","fry","juvenile","adult")
 
 ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
   geom_line(aes(color = lifestage)) +
@@ -71,3 +74,22 @@ ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
 ```
 
 Test different combinations of survival / reproduction and starting population structures to see what happens! 
+
+
+Pivot longer example
+```{r}
+demo <- data.frame(year = c(1995,2000,2005),
+                   cat= c(10,2,4),
+                   dog = c(2,6,7)
+                   )
+
+ggplot(demo) + geom_line(aes(x= year,y =cat)) + geom_line(aes(x=year,y = dog))
+
+
+## Instead do
+demo_longer <- demo %>% 
+  pivot_longer(cols = c(cat,dog), names_to = "species",values_to = "count")
+
+ggplot(demo_longer) + geom_line(aes(color = species))
+```
+

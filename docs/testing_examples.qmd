@@ -1,0 +1,55 @@
+---
+title: "testing-examples"
+format: html
+editor: visual
+---
+
+You can install multiple packages as a vector
+
+```{r}
+## install.packages(c("testthat","devtools","remotes"))
+```
+
+```{r}
+library(testthat)
+library(devtools)
+library(remotes)
+```
+
+## Write a function
+
+```{r}
+mean_range <- function(df){
+  col_means <- apply(X = df, MARGIN = 2, mean, na.rm = TRUE)
+  col_mean_max <- max(col_means)
+  col_mean_min <- min(col_means)
+  ## here put them into vectors 
+  return(c(col_mean_min,col_mean_max))
+}
+
+mean_range(mtcars)
+```
+
+## Write some unit tests using testthat 
+
+```{r}
+## If nothing happens then it means that is right 
+expect_length(mean_range(mtcars),2)
+
+#Error: mean_range(mtcars) has length 2, not length 3.
+expect_length(mean_range(mtcars),3)
+
+```
+
+```{r}
+# what is the type of data 
+expect_type(mean_range(mtcars),"double")
+```
+
+```{r}
+#Error: mean_range(mtcars)[2] < mean_range(mtcars)[2] is not TRUE
+#`actual`: FALSE
+#`expected`: TRUE
+# Unit testing is a part of software building but make life easier
+expect_true(mean_range(mtcars)[2] < mean_range(mtcars)[2])
+```
